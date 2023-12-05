@@ -6,4 +6,4 @@ def read_file(filename=""):
 	""" read file will allow input of the file name"""
 	with open(filename, encoding="utf-8") as k:
 		""" do the actual readding"""
-		print(f.read(), end="")
+		print(k.read(), end="")
