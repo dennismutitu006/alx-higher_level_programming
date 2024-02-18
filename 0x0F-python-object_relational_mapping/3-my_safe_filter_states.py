@@ -1,25 +1,24 @@
 #!/usr/bin/python3
 """
-This script will take in an argument and display all the values in the states
-where `name` matches the argument from the databaes `hbtn_0e_0_usa`.
-This time the script will be secure from any SQL injection unlike in no.2!
+Displays all values in the states table of the database hbtn_0e_0_usa
+whose name matches that supplied as argument.
+But this time Safe from SQL injections.
+Usage: ./3-my_safe_filter_states.py <mysql username> \
+                                    <mysql password> \
+                                    <database name> \
+                                    <state name searched>
 """
-
-import MySQLdb as db
+import MySQLdb as db2
 from sys import argv
 
-if __name__ = "__main__":
-    """
-    this line wll ensure that the script runs only if its executed directly
-    and not when imported a s a module.
-    """
-    db_connect = db.connect(user=argv[1], host="localhost", port=3306,
-                            passwd=argv[2], db=argv[3])
-    db_cursor = db_connect.cursor()
-    db_cursor.execute( "SELECT * FROM states WHERE  name LIKE \
-                       BINARY %(name)s ORDER BY  states.id ASC", {'name': argv[4]})
-
-        rs = db_cursor.fetchall()
-
-        for row in rs:
+if __name__ == "__main__":
+    db = db2.connect(host="localhost", port=3306, user=argv[1],
+                         passwd=argv[2], db=argv[3], charset="utf8")
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM states WHERE name LIKE %s ORDER BY id ASC",
+                   (argv[4],))
+    rows = cursor.fetchall()
+    for row in rows:
         print(row)
+    cursor.close()
+    db.close()
